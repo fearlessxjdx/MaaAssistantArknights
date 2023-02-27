@@ -162,3 +162,11 @@ bool asst::AbstractTask::save_img(const std::filesystem::path& relative_dir)
     Log.trace("Save image", relative_path);
     return asst::imwrite(relative_path, image);
 }
+
+void asst::AbstractTask::print_warning_to_GUI(const char* msg)
+{
+    json::value warn_info = basic_info_with_what("Warning");
+    warn_info["details"]["info"] = std::string(msg);
+    callback(AsstMsg::SubTaskExtraInfo, warn_info);
+    Log.warn(msg);
+}

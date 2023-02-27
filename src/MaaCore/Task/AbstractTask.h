@@ -65,6 +65,7 @@ namespace asst
         bool save_img(const std::filesystem::path& relative_dir = utils::path("debug"));
 
         json::value basic_info_with_what(std::string what) const;
+        void print_warning_to_GUI(const char* msg);
 
         bool m_enable = true;
         bool m_ignore_error = false;

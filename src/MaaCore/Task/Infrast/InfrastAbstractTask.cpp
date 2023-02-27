@@ -261,18 +261,19 @@ bool asst::InfrastAbstractTask::select_opers_review(infrast::CustomRoomConfig co
     const auto& oper_analyzer_res = oper_analyzer.get_result();
     size_t selected_count =
         ranges::count_if(oper_analyzer_res, [](const infrast::Oper& info) { return info.selected; });
-    Log.info("selected_count,config.names.size,num_of_opers_expect = ", selected_count, ",", room_config.names.size(),
+    Log.info("selected_count,config.names.size,num_of_opers_expect =", selected_count, ",", room_config.names.size(),
              ",", num_of_opers_expect);
 
     if (selected_count < num_of_opers_expect) {
-        Log.warn("select opers review fail: 选中干员数与期望不符");
+        print_warning_to_GUI("选中干员数与期望不符");
         return false;
     }
     if (facility_name() != "Dorm" && (!m_is_custom || room_config.names.empty() && room_config.candidates.empty())) {
+        Log.info("select opers review passed");
         return true;
     }
     if (selected_count < room_config.names.size()) {
-        Log.warn("select opers review fail: 存在自定义干员未选中");
+        print_warning_to_GUI("存在自定义干员未选中");
         return false;
     }
 
@@ -296,15 +297,15 @@ bool asst::InfrastAbstractTask::select_opers_review(infrast::CustomRoomConfig co
         }
         else { // 备选干员或自动选择，只要不选工作中的干员即可
             if (oper.doing == infrast::Doing::Working) {
-                Log.warn("选了工作中的干员:", name);
-                Log.warn("select opers review fail: 非自定义配置，却选了工作中的干员");
+                Log.warn("误选了工作中的干员:", name);
+                print_warning_to_GUI("误选了工作中的干员");
                 return false;
             }
         }
     }
 
     if (room_config.names.size()) {
-        Log.warn("select opers review fail: 存在自定义干员未选中");
+        print_warning_to_GUI("存在自定义干员未选中");
         return false;
     }
 

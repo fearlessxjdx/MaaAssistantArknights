@@ -995,6 +995,10 @@ namespace MaaWpfGui
                     _taskQueueViewModel.AddLog(nameStr.ToString());
                     break;
 
+                case "Warning":
+                    _taskQueueViewModel.AddLog(subTaskDetails["info"].ToString(), UILogColor.Warning);
+                    break;
+
                 /* 生息演算 */
                 case "ReclamationReport":
                     _taskQueueViewModel.AddLog(Localization.GetString("AlgorithmFinish") + "\n" +
